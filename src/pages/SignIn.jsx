@@ -1,10 +1,11 @@
 import {
   GoogleAuthProvider,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
 import { Link } from "react-router";
@@ -16,6 +17,9 @@ const googleProvider = new GoogleAuthProvider();
 const SignIn = () => {
   const [user, setUser] = useState(null);
   const [show, setShow] = useState(false);
+  // const [email, setEmail] = useState(null);
+
+  const emailRef = useRef(null);
 
   const handleSignin = (e) => {
     e.preventDefault();
@@ -27,6 +31,10 @@ const SignIn = () => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
+        if (!res.user?.emailVerified) {
+          toast.error("Your email is not verified");
+          return;
+        }
         console.log(res);
         setUser(res.user);
         toast.success("Signin Successful");
@@ -61,7 +69,20 @@ const SignIn = () => {
       });
   };
 
-  console.log(user);
+  const handleForgetPassword = (e) => {
+    // console.log(e.target.email);
+    console.log(emailRef.current.value);
+    const email = emailRef.current.value;
+    sendPasswordResetEmail(auth, email)
+      .then((res) => {
+        toast.success("Check your email to reset password");
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
+
+  //   console.log(email);
 
   return (
     <div className="min-h-[calc(100vh-20px)] flex items-center justify-center bg-gradient-to-br bg-gray-800 overflow-hidden">
@@ -104,6 +125,9 @@ const SignIn = () => {
                   <input
                     type="email"
                     name="email"
+                    ref={emailRef}
+                    // value={email}
+                    // onChange={(e) => setEmail(e.target.value)}
                     placeholder="example@email.com"
                     className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
@@ -126,6 +150,7 @@ const SignIn = () => {
                 </div>
 
                 <button
+                  onClick={handleForgetPassword}
                   className="hover:underline cursor-pointer"
                   type="button"
                 >

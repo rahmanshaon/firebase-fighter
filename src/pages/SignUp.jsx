@@ -1,4 +1,8 @@
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+} from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
@@ -43,12 +47,23 @@ const SignUp = () => {
       return; // Stop the function if validation fails
     }
 
+    // create user
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
+        // update profile
         updateProfile(res.user, { displayName, photoURL })
-          .then((res) => {
-            console.log(res);
-            toast.success("Signup Successful");
+          .then(() => {
+            // email verification
+            sendEmailVerification(res.user)
+              .then((res) => {
+                console.log(res);
+                toast.success(
+                  "Signup Successful. check your email to validate your account"
+                );
+              })
+              .catch((e) => {
+                toast.error(e.message);
+              });
           })
           .catch((e) => {
             toast.error(e.message);
