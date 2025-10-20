@@ -1,13 +1,53 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
 import { Link } from "react-router";
+import { auth } from "../firebase/firebase.config";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [show, setShow] = useState(false);
 
+  const handleSignup = (e) => {
+    e.preventDefault();
+
+    const email = e.target.email?.value;
+    const password = e.target.password?.value;
+
+    console.log("signup function entered", { email, password });
+
+    // console.log(password.length);
+    // if (password.length < 6) {
+    //   toast.error("Password should be at least 6 digit");
+    //   return;
+    // }
+
+    // Password validation using Regex
+    const passwordRegex =
+      /(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9])(?=.*[a-z]).{6,}/;
+
+    if (!passwordRegex.test(password)) {
+      //   console.error("Password validation failed.");
+      toast.error(
+        "Password must be 6+ chars with an uppercase, lowercase, number, and special character."
+      );
+      return; // Stop the function if validation fails
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        console.log(res);
+        toast.success("Signup Successful");
+      })
+      .catch((e) => {
+        console.log(e);
+        toast.error(e.message);
+      });
+  };
+
   return (
-    <div className="min-h-[96vh] flex items-center justify-center bg-gray-600 relative overflow-hidden">
+    <div className="min-h-[96vh] flex items-center justify-center bg-gray-800 relative overflow-hidden">
       <div className="container mx-auto">
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10 p-6 lg:p-10 text-white">
           <div className="max-w-lg text-center lg:text-left">
@@ -25,8 +65,8 @@ const SignUp = () => {
               Sign Up
             </h2>
 
-            <form className="space-y-4">
-              <div>
+            <form onSubmit={handleSignup} className="space-y-4">
+              {/* <div>
                 <label className="block text-sm font-medium mb-1">Name</label>
                 <input
                   type="text"
@@ -43,7 +83,7 @@ const SignUp = () => {
                   placeholder="Your photo URL here"
                   className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-400"
                 />
-              </div>
+              </div> */}
 
               <div>
                 <label className="block text-sm font-medium mb-1">Email</label>

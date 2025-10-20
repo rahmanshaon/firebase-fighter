@@ -15,8 +15,8 @@ const ComingSoon = ({ pageName = "Page" }) => {
     );
   };
   return (
-    <div className="bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 min-h-screen">
-      <div className="container mx-auto flex flex-col justify-center items-center text-center">
+    <div className="bg-gray-800">
+      <div className="container min-h-screen mx-auto flex flex-col justify-center items-center text-center">
         <h1 className="text-xl md:text-5xl font-bold text-white animate-bounce drop-shadow-lg">
           🚀 {pageName} is Coming Soon
         </h1>
