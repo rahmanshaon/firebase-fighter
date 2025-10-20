@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
@@ -12,10 +12,18 @@ const SignUp = () => {
   const handleSignup = (e) => {
     e.preventDefault();
 
+    const displayName = e.target.name?.value;
+    const photoURL = e.target.photo?.value;
     const email = e.target.email?.value;
     const password = e.target.password?.value;
 
-    console.log("signup function entered", { email, password });
+    // console.log("signup function entered", {
+    //   email,
+    //   password,
+    //   displayName,
+    //   photoURL,
+    // });
+    // return;
 
     // console.log(password.length);
     // if (password.length < 6) {
@@ -37,8 +45,14 @@ const SignUp = () => {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
-        console.log(res);
-        toast.success("Signup Successful");
+        updateProfile(res.user, { displayName, photoURL })
+          .then((res) => {
+            console.log(res);
+            toast.success("Signup Successful");
+          })
+          .catch((e) => {
+            toast.error(e.message);
+          });
       })
       .catch((e) => {
         console.log(e);
@@ -71,7 +85,7 @@ const SignUp = () => {
             </h2>
 
             <form onSubmit={handleSignup} className="space-y-4">
-              {/* <div>
+              <div>
                 <label className="block text-sm font-medium mb-1">Name</label>
                 <input
                   type="text"
@@ -80,6 +94,7 @@ const SignUp = () => {
                   className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-400"
                 />
               </div>
+
               <div>
                 <label className="block text-sm font-medium mb-1">Photo</label>
                 <input
@@ -88,7 +103,7 @@ const SignUp = () => {
                   placeholder="Your photo URL here"
                   className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-400"
                 />
-              </div> */}
+              </div>
 
               <div>
                 <label className="block text-sm font-medium mb-1">Email</label>

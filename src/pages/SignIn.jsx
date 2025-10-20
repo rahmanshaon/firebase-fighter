@@ -157,7 +157,7 @@ const SignIn = () => {
                   Continue with Google
                 </button>
 
-                {/* Github Signin */}
+                {/* Github Signin
                 <button
                   type="button"
                   className="flex items-center justify-center gap-3 bg-white text-gray-800 px-5 py-2 rounded-lg w-full font-semibold hover:bg-gray-100 transition-colors cursor-pointer"
@@ -168,7 +168,7 @@ const SignIn = () => {
                     className="w-5 h-5"
                   />
                   Continue with Github
-                </button>
+                </button> */}
 
                 <p className="text-center text-sm text-white/80 mt-3">
                   Don't have an account?{" "}
