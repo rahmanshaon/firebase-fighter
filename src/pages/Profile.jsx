@@ -1,11 +1,8 @@
-import React from 'react';
+import React from "react";
+import ComingSoon from "./ComingSoon";
 
 const Profile = () => {
-    return (
-        <div>
-            Profile Page
-        </div>
-    );
+  return <ComingSoon pageName="Profile Page" />;
 };
 
 export default Profile;

@@ -1,11 +1,8 @@
-import React from 'react';
+import React from "react";
+import ComingSoon from "./ComingSoon";
 
 const Home = () => {
-    return (
-        <div>
-            Home Page
-        </div>
-    );
+  return <ComingSoon pageName="Home Page" />;
 };
 
 export default Home;
