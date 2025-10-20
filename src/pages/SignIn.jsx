@@ -1,10 +1,17 @@
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
 import { Link } from "react-router";
 import { auth } from "../firebase/firebase.config";
 import { toast } from "react-toastify";
+
+const googleProvider = new GoogleAuthProvider();
 
 const SignIn = () => {
   const [user, setUser] = useState(null);
@@ -19,6 +26,19 @@ const SignIn = () => {
     console.log("signin function entered", { email, password });
 
     signInWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        console.log(res);
+        setUser(res.user);
+        toast.success("Signin Successful");
+      })
+      .catch((e) => {
+        console.log(e);
+        toast.error(e.message);
+      });
+  };
+
+  const handleGoogleSignin = () => {
+    signInWithPopup(auth, googleProvider)
       .then((res) => {
         console.log(res);
         setUser(res.user);
@@ -125,6 +145,7 @@ const SignIn = () => {
 
                 {/* Google Signin */}
                 <button
+                  onClick={handleGoogleSignin}
                   type="button"
                   className="flex items-center justify-center gap-3 bg-white text-gray-800 px-5 py-2 rounded-lg w-full font-semibold hover:bg-gray-100 transition-colors cursor-pointer"
                 >
