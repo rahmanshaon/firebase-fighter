@@ -42,7 +42,12 @@ const SignUp = () => {
       })
       .catch((e) => {
         console.log(e);
-        toast.error(e.message);
+        console.log(e.code);
+        if (e.code == "auth/email-already-in-use") {
+          toast.error("User already exits in database");
+        } else {
+          toast.error(e.message);
+        }
       });
   };
 
